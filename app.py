@@ -45,6 +45,71 @@ def SQL(*args):
     conn.close()
     return result
 
-@app.route("/")
+def login_required(f):
+    """
+    Decorate routes to require login.
+    """
+
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("user_id") is None:
+            return redirect("/login")
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+@app.route("/", methods=["GET", "POST"])
 def index():
-    return render_template("index.html")
+        return render_template("index.html")
+
+
+@app.route("/sign-up")
+def sign_up():
+    if request.method == "POST":
+        email = request.form.get("email")
+        password = request.form.get("password")
+
+        if not email:
+            return render_template("register.html", passer="Must enter a email")
+        if not password:
+            return render_template("register.html", passer="Must enter a password")
+        
+        rows = SQL("SELECT * FROM users WHERE username == ?", email)
+
+        if len(rows) != 0:
+            return render_template("register.html", userer="Email already in use")
+        
+        SQL("INSERT INTO users (username, hash) VALUES (?,?)", email, generate_password_hash(password))
+
+        rows = SQL("SELECT * FROM users WHERE username == ?", email)
+
+        session["user_id"] = rows[0]["id"]
+
+        return redirect("/")
+    else:
+        return render_template("sign-up.html")
+    
+@app.route("/login")
+def login():
+    if request.method == "POST":
+        email = request.form.get("email")
+        password = request.form.get("password")
+
+        if not email:
+            return render_template("login.html")
+        if not password:
+            return render_template("login.html")
+
+        rows = SQL("SELECT * FROM users WHERE username == ?", email)
+
+        if not rows:
+            return render_template("index.html")
+
+        if not check_password_hash(rows[0]["hash"]):
+            return render_template("index.html")
+
+        session["user_id"] = rows[0]["id"]
+
+        return redirect("/")
+    else:
+        return render_template("login.html")
