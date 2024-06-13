@@ -14,6 +14,12 @@ Session(app)
 
 DB = "data.db"
 
+def dict_factory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
+
 def create_connection(db_file):
     """ Create a connection to the sql database
     Parameters: 
@@ -63,53 +69,59 @@ def index():
         return render_template("index.html")
 
 
-@app.route("/sign-up")
+@app.route("/sign-up", methods=["GET", "POST"])
 def sign_up():
+    session.clear()
     if request.method == "POST":
-        email = request.form.get("email")
         password = request.form.get("password")
+        username = request.form.get("username")
 
-        if not email:
-            return render_template("register.html", passer="Must enter a email")
+        if not username:
+            return render_template("sign-up.html", passer="Must enter a username")
         if not password:
-            return render_template("register.html", passer="Must enter a password")
-        
-        rows = SQL("SELECT * FROM users WHERE username == ?", email)
+            return render_template("sign-up.html", passer="Must enter a password")
+            
+        rows = SQL("SELECT * FROM users WHERE username == ?", username)
 
         if len(rows) != 0:
-            return render_template("register.html", userer="Email already in use")
-        
-        SQL("INSERT INTO users (username, hash) VALUES (?,?)", email, generate_password_hash(password))
+            return render_template("sign-up.html", userer="Username already exists")
+            
+        SQL("INSERT INTO users (username, hash) VALUES (?,?)", username, generate_password_hash(password))
 
-        rows = SQL("SELECT * FROM users WHERE username == ?", email)
+        rows = SQL("SELECT * FROM users WHERE username == ?", username)
 
-        session["user_id"] = rows[0]["id"]
+        session["user_id"] = rows[0][0]
 
         return redirect("/")
     else:
         return render_template("sign-up.html")
     
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        email = request.form.get("email")
+        username = request.form.get("username")
         password = request.form.get("password")
 
-        if not email:
-            return render_template("login.html")
+        if not username:
+            return render_template("login.html", userer="Must enter a username")
         if not password:
-            return render_template("login.html")
-
-        rows = SQL("SELECT * FROM users WHERE username == ?", email)
+            return render_template("login.html", passer="Must enter a password")
+        
+        rows = SQL("SELECT * FROM users WHERE username == ?", username)
 
         if not rows:
-            return render_template("index.html")
+            return render_template("login.html", userer="User doesn't exist")
 
-        if not check_password_hash(rows[0]["hash"]):
-            return render_template("index.html")
+        if not check_password_hash(rows[0][2], password): # hash / password is at index 2
+            return render_template("login.html", passer="Incorrect password")
 
-        session["user_id"] = rows[0]["id"]
-
+        session["user_id"] = rows[0][0] # id is at index 0 
         return redirect("/")
     else:
         return render_template("login.html")
+    
+@app.route("/logout")
+@login_required
+def logout():
+    session.clear()
+    return redirect("/")

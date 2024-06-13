@@ -13,6 +13,21 @@ navClose.addEventListener('click', () =>{
    navMenu.classList.remove('show-menu')
 })
 
+/*=============== Profile management form ===============*/
+const profile = document.getElementById('profile'),
+      profileBtn = document.getElementById('login-btn'),
+      profileClose = document.getElementById('profile-close')
+
+/* Profile show */
+profileBtn.addEventListener('click', () =>{
+   profile.classList.add('show-search')
+})
+
+/* Profile hidden */
+profileClose.addEventListener('click', () =>{
+   profile.classList.remove('show-search')
+})
+
 /*=============== SEARCH ===============*/
 const search = document.getElementById('search'),
       searchBtn = document.getElementById('search-btn'),

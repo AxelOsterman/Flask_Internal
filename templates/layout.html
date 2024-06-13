@@ -4,11 +4,16 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+      <!--=============== BOOTSTRAP ===============-->
+
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
       <!--=============== REMIXICONS ===============-->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css">
 
       <!--=============== CSS ===============-->
       <link rel="stylesheet" href="/static/style.css">
+
 
       <title>SkyWings Airlines</title>
    </head>
@@ -52,7 +57,12 @@
                <i class="ri-search-line nav__search" id="search-btn"></i>
 
                <!-- Login button -->
-               <a href="/login"><i class="ri-user-line nav__login" id="login-btn"></i></a>
+
+               {% if session["user_id"] %}
+                  <i class="ri-user-line nav__login" id="login-btn"></i>
+               {% else %}
+                  <a href="/login"><i class="ri-user-line nav__login" id="login-btn"></i></a>
+               {% endif %}
 
                <!-- Toggle button -->
                <div class="nav__toggle" id="nav-toggle">
@@ -61,6 +71,16 @@
             </div>
          </nav>
       </header>
+
+      <!--==================== Profile management ====================-->
+      <div class="search" id="profile">
+         <div id="profile-Items">
+            <a href="/logout"><p>Log-Out</p></a>
+            <a href="/manage-booking"><p>Manage Bookings</p></a>
+         </div>
+
+         <i class="ri-close-line search__close" id="profile-close"></i>
+      </div>
 
       <!--==================== SEARCH ====================-->
       <div class="search" id="search">

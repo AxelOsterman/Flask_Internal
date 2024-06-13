@@ -250,93 +250,18 @@ img {
 .show-search .search__form {
   transform: translateY(0);
 }
+/*=============== Profile Management ===============*/
 
-/*=============== LOGIN ===============*/
-.login__form, 
-.login__group {
-  display: grid;
-}
-
-.login__form {
-  background-color: var(--container-color);
-  padding: 2rem 1.5rem 2.5rem;
-  box-shadow: 0 8px 32px hsla(230, 75%, 15%, .2);
-  border-radius: 1rem;
-  row-gap: 1.25rem;
+#profile-Items{
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #000;
+  text-decoration: none;
+  align-items: center;
   text-align: center;
-  transform: translateY(-1rem);
-  transition: transform .4s;
+  padding-top: 2%;
 }
 
-.login__title {
-  font-size: var(--h2-font-size);
-  color: var(--title-color);
-}
-
-.login__group {
-  row-gap: 1rem;
-}
-
-.login__label {
-  display: block;
-  text-align: initial;
-  color: var(--title-color);
-  font-weight: var(--font-medium);
-  margin-bottom: .25rem;
-}
-
-.login__input {
-  width: 100%;
-  background-color: var(--container-color);
-  border: 2px solid var(--border-color);
-  padding: 1rem;
-  border-radius: .5rem;
-  color: var(--text-color);
-}
-
-.login__input::placeholder {
-  color: var(--text-color);
-}
-
-.login__signup {
-  margin-bottom: .5rem;
-}
-
-.login__signup a {
-  color: var(--first-color);
-}
-
-.login__forgot {
-  display: inline-block;
-  color: var(--first-color);
-  margin-bottom: 1.25rem;
-}
-
-.login__button {
-  display: inline-block;
-  background-color: var(--first-color);
-  width: 100%;
-  color: #fff;
-  font-weight: var(--font-semi-bold);
-  padding: 1rem;
-  border-radius: .5rem;
-  cursor: pointer;
-  transition: box-shadow .4s;
-}
-
-.login__button:hover {
-  box-shadow: 0 4px 24px hsla(230, 75%, 40%, .4);
-}
-
-/* Show login */
-.show-login {
-  opacity: 1;
-  pointer-events: initial;
-}
-
-.show-login .login__form {
-  transform: translateY(0);
-}
 
 /*=============== BREAKPOINTS ===============*/
 /* For medium devices */
@@ -394,4 +319,40 @@ img {
   .container {
     margin-inline: auto;
   }
+}
+
+.LoginForm{
+  margin-top: 15%;
+  margin-left: 25%;
+  width: 50%;
+  height: 30%;
+}
+
+.LoginForm{
+  position: absolute;
+  text-align: center;
+  width: 30%;
+  height: 35%;
+  padding: 2%;
+  margin-top: 15%;
+  margin-left: 35%;
+  align-items: center;
+}
+
+.LoginForm h1{
+  color: #000;
+  font-weight: 500;
+}
+
+.logintag{
+  color: #f6f6f6;
+}
+.passerror{
+  color: #ff0000;
+  font-weight: 900;
+}
+
+.usererror{
+  color: #ff0000;
+  font-weight: 900;
 }

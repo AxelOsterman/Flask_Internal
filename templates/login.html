@@ -1,35 +1,21 @@
 {% extends "layout.html" %}
 
 {% block main %}
-    <div class="login" class="show-login" id="login">
-        <form action="" class="login__form">
-        <h2 class="login__title">Log In</h2>
-        
-        <div class="login__group">
-            <div>
-                <label for="email" class="login__label">Email</label>
-                <input type="email" placeholder="Write your email" id="email" class="login__input" name="email">
+    <div class="LoginForm">
+        <h1 class="logintag">Log In</h1>
+        <form action="/login" method="post">
+            <div class="form-group">
+                <p class="usererror">{{ userer }}</p>
+                <input type="input" class="form-control" id="username" name="username" aria-describedby="emailHelp" placeholder="Username">
             </div>
-            
-            <div>
-                <label for="password" class="login__label">Password</label>
-                <input type="password" placeholder="Enter your password" id="password" class="login__input" name="password">
+            <div class="form-group">
+                <label for="exampleInputPassword1"> </label>
+                <p class="passerror">{{ passer }}</p>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                <label for="exampleInputPassword1"> </label>
             </div>
-        </div>
-
-        <div>
-            <p class="login__signup">
-                You do not have an account? <a href="/sign-up">Sign up</a>
-            </p>
-
-            <a href="/fpw" class="login__forgot">
-                You forgot your password
-            </a>
-
-            <button type="submit" class="login__button">Log In</button>
-        </div>
+            <a href="/sign-up"><p>Don't have an account? Sign up here</p></a>
+            <button type="submit" class="btn btn-primary">Sign-Up</button>
         </form>
-
-        <i class="ri-close-line login__close" id="login-close"></i>
     </div>
 {% endblock %}
