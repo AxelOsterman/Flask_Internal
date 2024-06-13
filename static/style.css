@@ -189,6 +189,7 @@ img {
 }
 
 .nav__list {
+  margin-top: 2vh;
   display: flex;
   flex-direction: column;
   row-gap: 2.5rem;
@@ -269,6 +270,7 @@ img {
   .search,
   .login {
     padding-top: 10rem;
+    padding-right: 2%;
   }
 
   .search__form {
@@ -355,4 +357,38 @@ img {
 .usererror{
   color: #ff0000;
   font-weight: 900;
+}
+
+/*=============== Home Page ===============*/
+
+.image-carousel{
+  width: 35vw;
+  height: 60vh;
+  margin-top: 27.5vh;
+  margin-left: 7.5vw;
+  background-color: #000;
+}
+
+.image-carousel img{
+  height: 100%;
+  width: 100%;
+}
+
+.text-box{
+  color: #000;
+  padding-top: 7.5%;
+  margin-top: -60vh;
+  margin-left: 45vw;
+  width: 45vw;
+  height: 40vh;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+#destinations-tbl{
+  margin-top: 20vh;
+  margin-left: 15vw;
+  width: 70vw;
 }

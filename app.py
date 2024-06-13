@@ -125,3 +125,35 @@ def login():
 def logout():
     session.clear()
     return redirect("/")
+
+@app.route("/destinations", methods=["GET", "POST"])
+def destinations():
+    fetched_data = SQL("SELECT Name, City, Country FROM airports")
+    if request.method == "POST":
+        return render_template("destinations.html", fetched_data=fetched_data)
+    else:
+        return render_template("destinations.html", fetched_data=fetched_data)
+    
+@app.route("/bookings", methods=["GET", "POST"])
+@login_required
+def bookings():
+    if request.method == "POST":
+        return redirect("/")
+    else:
+        return render_template("bookings.html")
+    
+@app.route("/manage-booking", methods=["GET", "POST"])
+@login_required
+def manage_bookings():
+    if request.method == "POST":
+        return redirect("/")
+    else:
+        return render_template("manage-bookings.html")
+        
+    
+@app.route("/contact", methods=["GET", "POST"])
+def contact():
+    if request.method == "POST":
+        return redirect("/")
+    else:
+        return render_template("contact.html")

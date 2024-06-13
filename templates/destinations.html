@@ -1,5 +1,16 @@
 {% extends "layout.html" %}
 
 {% block main %}
-
+    <div id="destinations-tbl">
+        <table>
+            <tr><th>Airport</th><th>City</th><th>Country</th></tr>
+            {% for airport in fetched_data %}
+                <tr>
+                    {% for data in airport %}
+                        <td>{{ data }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 {% endblock %}
