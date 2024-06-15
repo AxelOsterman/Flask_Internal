@@ -384,11 +384,40 @@ img {
 }
 
 table, th, td {
-  border: 1px solid black;
+  width: 100%;
+  border-collapse: collapse;
+  padding: 1rem;
 }
 
 #destinations-tbl{
   margin-top: 20vh;
   margin-left: 15vw;
   width: 70vw;
+}
+
+#errorImg{
+  width: 100vw;
+  height: 90vh;
+  margin-top: 10vh;
+}
+
+.errorText{
+  font-weight: 700;
+  color: #000;
+  font-size: 1.8rem;
+  text-align: center;
+  position: absolute;
+  margin-left: 15vw;
+}
+
+#errorMsg{
+  margin-top: 20vh;
+}
+
+#errorCode{
+  margin-top: 70vh;
+}
+
+tr:nth-of-type(2n){
+  background: hsl(0 0% 0% / 0.02);
 }

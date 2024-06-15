@@ -126,6 +126,36 @@ def logout():
     session.clear()
     return redirect("/")
 
+@app.route("/search", methods=["POST"])
+def search():
+    if request.method == "POST":
+        search_req = request.form.get("search")
+        fetched_data = SQL("SELECT Name, City, Country FROM airports")
+        matches_search = False
+        refined_data = []
+
+        for data in fetched_data: # Loop through all the data that is in the database
+            for i in range(0, 3): # Check the Name, City and Country section
+                matches_search = True
+                data_chars = []
+                for character in data[i]:
+                    data_chars.append(character)
+                counter = 0
+                for char in search_req: # Loop through every character in "data" and check if it matches that of the users search
+                    if len(data_chars) >= len(search_req):
+                        if data_chars[counter].lower() != char.lower(): # Set to lower so there's not captilisation errors
+                            matches_search = False
+                    else:
+                        matches_search = False
+                    counter += 1
+                if matches_search == True:
+                        refined_data.append(data)
+        if len(refined_data) <= 0:
+            return render_template("error.html", error="Unable to find your request", errorCode="404 Not Found")
+        else:
+            return render_template("destinations.html", fetched_data=refined_data)
+
+
 @app.route("/destinations", methods=["GET", "POST"])
 def destinations():
     fetched_data = SQL("SELECT Name, City, Country FROM airports")
@@ -157,3 +187,7 @@ def contact():
         return redirect("/")
     else:
         return render_template("contact.html")
+    
+@app.route("/error")
+def error():
+    return render_template("error.html")
