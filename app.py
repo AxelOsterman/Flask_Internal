@@ -14,6 +14,8 @@ Session(app)
 
 DB = "data.db"
 
+search_req = ""
+
 def dict_factory(cursor, row):
     d = {}
     for idx, col in enumerate(cursor.description):
@@ -128,6 +130,7 @@ def logout():
 
 @app.route("/search", methods=["POST"])
 def search():
+    global search_req
     if request.method == "POST":
         search_req = request.form.get("search")
         fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports")
@@ -138,7 +141,7 @@ def search():
             for i in range(0, 5): # Check the Name, City and Country, Longitude, Latitude section
                 matches_search = True
                 data_chars = []
-                for character in data[i]:
+                for character in str(data[i]):
                     data_chars.append(character)
                 counter = 0
                 for char in search_req: # Loop through every character in "data" and check if it matches that of the users search
@@ -158,37 +161,39 @@ def search():
 
 @app.route("/destinations")
 def destinations():
+    global search_req
+    refined_data = []
     fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports")
     field = request.args.get('field')
     sort = request.args.get('sort')
 
-    if field == 'Name':
+    if field in ['Name', 'City', 'Country', 'Latitude', 'Longitutde']:
         if sort == 'a-z':
-            fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports ORDER BY Name ASC")
+            fetched_data = SQL(f"SELECT Name, City, Country, Latitude, Longitude FROM airports ORDER BY {field} ASC")
         else:
-            fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports ORDER BY Name DESC")
-    elif field == 'City':
-        if sort == 'a-z':
-            fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports ORDER BY City ASC")
-        else:
-            fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports ORDER BY City DESC")
-    elif field == 'Country':
-        if sort == 'a-z':
-            fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports ORDER BY Country ASC")
-        else:
-            fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports ORDER BY Country DESC")
-    elif field == 'Latitude':
-        if sort == 'a-z':
-            fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports ORDER BY Latitude ASC")
-        else:
-            fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports ORDER BY Latitude DESC")
-    elif field == 'Longitude':
-        if sort == 'a-z':
-            fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports ORDER BY Longitude ASC")
-        else:
-            fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports ORDER BY Longitude DESC")
+            fetched_data = SQL(f"SELECT Name, City, Country, Latitude, Longitude FROM airports ORDER BY {field} DESC")
 
-    return render_template("destinations.html", fetched_data=fetched_data)
+    for data in fetched_data: # Loop through all the data that is in the database
+        for i in range(0, 5): # Check the Name, City and Country, Longitude, Latitude section
+            matches_search = True
+            data_chars = []
+            for character in str(data[i]):
+                data_chars.append(character)
+            counter = 0
+            for char in search_req: # Loop through every character in "data" and check if it matches that of the users search
+                if len(data_chars) >= len(search_req):
+                    if data_chars[counter].lower() != char.lower(): # Set to lower so there's not captilisation errors
+                        matches_search = False
+                else:
+                    matches_search = False
+                counter += 1
+            if matches_search == True:
+                    refined_data.append(data)
+    search_req = "" # reset search request so user can return to original destination page if they refresh the page
+    if len(refined_data) <= 0:
+        return render_template("error.html", error="Unable to find your request", errorCode="404 Not Found")
+    else:
+        return render_template("destinations.html", fetched_data=refined_data)
     
 @app.route("/bookings", methods=["GET", "POST"])
 @login_required
