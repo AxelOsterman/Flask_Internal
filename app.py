@@ -129,6 +129,7 @@ def logout():
     return redirect("/")
 
 @app.route("/search", methods=["POST"])
+@login_required
 def search():
     global search_req
     if request.method == "POST":
@@ -138,6 +139,7 @@ def search():
         refined_data = []
 
         for data in fetched_data: # Loop through all the data that is in the database
+            searched = False
             for i in range(0, 5): # Check the Name, City and Country, Longitude, Latitude section
                 matches_search = True
                 data_chars = []
@@ -151,7 +153,7 @@ def search():
                     else:
                         matches_search = False
                     counter += 1
-                if matches_search == True:
+                if matches_search and not searched:
                         refined_data.append(data)
         if len(refined_data) <= 0:
             return render_template("error.html", error="Unable to find your request", errorCode="404 Not Found")
@@ -160,6 +162,7 @@ def search():
 
 
 @app.route("/destinations")
+@login_required
 def destinations():
     global search_req
     refined_data = []
@@ -174,6 +177,7 @@ def destinations():
             fetched_data = SQL(f"SELECT Name, City, Country, Latitude, Longitude FROM airports ORDER BY {field} DESC")
 
     for data in fetched_data: # Loop through all the data that is in the database
+        searched = False
         for i in range(0, 5): # Check the Name, City and Country, Longitude, Latitude section
             matches_search = True
             data_chars = []
@@ -187,29 +191,14 @@ def destinations():
                 else:
                     matches_search = False
                 counter += 1
-            if matches_search == True:
+            if matches_search and not searched:
                     refined_data.append(data)
+                    searched = True
     search_req = "" # reset search request so user can return to original destination page if they refresh the page
     if len(refined_data) <= 0:
         return render_template("error.html", error="Unable to find your request", errorCode="404 Not Found")
     else:
         return render_template("destinations.html", fetched_data=refined_data)
-    
-@app.route("/bookings", methods=["GET", "POST"])
-@login_required
-def bookings():
-    if request.method == "POST":
-        return redirect("/")
-    else:
-        return render_template("bookings.html")
-    
-@app.route("/manage-booking", methods=["GET", "POST"])
-@login_required
-def manage_bookings():
-    if request.method == "POST":
-        return redirect("/")
-    else:
-        return render_template("manage-bookings.html")
         
     
 @app.route("/contact", methods=["GET", "POST"])
@@ -218,7 +207,3 @@ def contact():
         return redirect("/")
     else:
         return render_template("contact.html")
-    
-@app.route("/error")
-def error():
-    return render_template("error.html")
