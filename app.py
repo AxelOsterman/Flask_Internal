@@ -155,6 +155,7 @@ def search():
                     counter += 1
                 if matches_search and not searched:
                         refined_data.append(data)
+                        searched = True
         if len(refined_data) <= 0:
             return render_template("error.html", error="Unable to find your request", errorCode="404 Not Found")
         else:
