@@ -383,6 +383,8 @@ img {
   height: 40vh;
 }
 
+/*=============== Destinations Page ===============*/
+
 table, th, td {
   width: 100%;
   border-collapse: collapse;
@@ -390,7 +392,7 @@ table, th, td {
 }
 
 #destinations-tbl{
-  margin-top: 20vh;
+  margin-top: 5vh;
   margin-left: 15vw;
   width: 70vw;
 }
@@ -420,4 +422,27 @@ table, th, td {
 
 tr:nth-of-type(2n){
   background: hsl(0 0% 0% / 0.02);
+}
+
+#filter{
+  color: #000;
+}
+
+.filter_table{
+  display: none;
+  background: hsl(0 0% 0% / 0.02);
+  margin-left: 25vw;
+  width: 50vw;
+  height: 10vh;
+}
+
+.show-filter{
+  display: block;
+}
+
+.filter_table h1{
+  font-size: 0.9rem;
+  color: #000;
+  font-weight: 700;
+  padding: 1%;
 }

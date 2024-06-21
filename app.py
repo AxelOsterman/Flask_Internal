@@ -130,12 +130,12 @@ def logout():
 def search():
     if request.method == "POST":
         search_req = request.form.get("search")
-        fetched_data = SQL("SELECT Name, City, Country FROM airports")
+        fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports")
         matches_search = False
         refined_data = []
 
         for data in fetched_data: # Loop through all the data that is in the database
-            for i in range(0, 3): # Check the Name, City and Country section
+            for i in range(0, 5): # Check the Name, City and Country, Longitude, Latitude section
                 matches_search = True
                 data_chars = []
                 for character in data[i]:
@@ -156,13 +156,39 @@ def search():
             return render_template("destinations.html", fetched_data=refined_data)
 
 
-@app.route("/destinations", methods=["GET", "POST"])
+@app.route("/destinations")
 def destinations():
-    fetched_data = SQL("SELECT Name, City, Country FROM airports")
-    if request.method == "POST":
-        return render_template("destinations.html", fetched_data=fetched_data)
-    else:
-        return render_template("destinations.html", fetched_data=fetched_data)
+    fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports")
+    field = request.args.get('field')
+    sort = request.args.get('sort')
+
+    if field == 'Name':
+        if sort == 'a-z':
+            fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports ORDER BY Name ASC")
+        else:
+            fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports ORDER BY Name DESC")
+    elif field == 'City':
+        if sort == 'a-z':
+            fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports ORDER BY City ASC")
+        else:
+            fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports ORDER BY City DESC")
+    elif field == 'Country':
+        if sort == 'a-z':
+            fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports ORDER BY Country ASC")
+        else:
+            fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports ORDER BY Country DESC")
+    elif field == 'Latitude':
+        if sort == 'a-z':
+            fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports ORDER BY Latitude ASC")
+        else:
+            fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports ORDER BY Latitude DESC")
+    elif field == 'Longitude':
+        if sort == 'a-z':
+            fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports ORDER BY Longitude ASC")
+        else:
+            fetched_data = SQL("SELECT Name, City, Country, Latitude, Longitude FROM airports ORDER BY Longitude DESC")
+
+    return render_template("destinations.html", fetched_data=fetched_data)
     
 @app.route("/bookings", methods=["GET", "POST"])
 @login_required

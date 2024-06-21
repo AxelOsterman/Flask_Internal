@@ -1,10 +1,63 @@
 {% extends "layout.html" %}
 
 {% block main %}
+    <h1 style="font-weight: 700; color: black; font-size: 1.8rem; text-align: center; margin-top: 10%;">Our international and domestic hubs</h1>
+
+    <i class="ri-equalizer-line" style="font-weight: 700; font-size: 1.6rem; text-align: center; margin-top: 2%; margin-left: 50vw;" id="filter"></i>
+    <div class="filter_table" id="filterdiv">
+        <h1>SORT BY:</h1>
+       <!-- Bootstrap dropdowns -->
+       <div class="btn-group">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Airport
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="/destinations?sort=a-z&field=Name">Alphabetically A-Z</a>
+                <a class="dropdown-item" href="/destinations?sort=z-a&field=Name">Alphabetically Z-A</a>
+            </div>
+       </div>
+       
+       <div class="btn-group">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                City
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="/destinations?sort=a-z&field=City">Alphabetically A-Z</a>
+                <a class="dropdown-item" href="/destinations?sort=z-a&field=City">Alphabetically Z-A</a>
+            </div>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Country
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="/destinations?sort=a-z&field=Country">Alphabetically A-Z</a>
+                <a class="dropdown-item" href="/destinations?sort=z-a&field=Country">Alphabetically Z-A</a>
+            </div>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Latitude
+            </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="/destinations?sort=a-z&field=Latitude">Numerically 0-9</a>
+                    <a class="dropdown-item" href="/destinations?sort=z-a&field=Latitude">Numerically 9-0</a>
+                </div>
+           </div>
+           <div class="btn-group">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Longitude
+            </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="/destinations?sort=a-z&field=Longitude">Numerically 0-9</a>
+                    <a class="dropdown-item" href="/destinations?sort=z-a&field=Longitude">Numerically 0-9</a>
+                </div>
+           </div>
+    </div>
+
     <div id="destinations-tbl">
         <table>
-            <caption>Our International and Domestic Hubs</caption>
-            <tr><th>Airport</th><th>City</th><th>Country</th></tr>
+            <tr><th>Airport</th><th>City</th><th>Country</th><th>Latitude</th><th>Longitude</th></tr>
             {% for airport in fetched_data %}
                 <tr>
                     {% for data in airport %}
@@ -14,4 +67,6 @@
             {% endfor %}
         </table>
     </div>
+
+    <script src="/static/destinations.js"></script>
 {% endblock %}
